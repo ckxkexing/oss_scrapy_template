@@ -41,10 +41,13 @@ class GetGitHubReposInfoSpider(scrapy.Spider):
             print("速度太快  暂停3秒")
             time.sleep(3)  # If the rate limit is renewed in a minute, put 60 seconds, and so on.
             # self.crawler.engine.unpause()
-            new_request = get_retry_request(response.request, reason='empty', spider=self)
-            if new_request:
-                yield new_request
+            yield self.next_request()   # my methods
             return
+
+            # new_request = get_retry_request(response.request, reason='empty', spider=self)  # official methods, limit under request time!
+            # if new_request:
+            #     yield new_request
+            # return
         self.cur_page += 1
         print("!!!", self.cur_page)
         json_data = json.loads(response.text) # 获取json
